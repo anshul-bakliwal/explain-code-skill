@@ -1,17 +1,17 @@
 ---
 name: explain-code
-description: Deep codebase & API explainer that generates multi-tier documentation, nested Mermaid & IcePanel architecture diagrams, OpenSpec-ready domain data models, and deep OpenAPI specs with cognitive attribute dependencies.
+description: Deep codebase & API explainer that generates a multi-tier documentation suite with a master parent index linking to distinct child markdown documents, nested Mermaid & IcePanel diagrams, OpenSpec-ready domain data models, and deep OpenAPI specs with cognitive attribute dependencies.
 ---
 
 # Instructions
 
-When triggered with `/explain-code`, execute the multi-phase analysis and explanation pipeline according to the targeted user scope, leveraging the configured MCP servers across all phases.
+When triggered with `/explain-code`, execute the multi-phase analysis and explanation pipeline according to the targeted user scope. Generate a suite of **logically separated Markdown files**, creating a master parent document (`EXPLAIN_PARENT.md`) that links to all dedicated child documents.
 
 ---
 
 ## Prerequisites: MCP Server Integrations
 
-To enable deep cross-repository analysis, architectural modeling, and organizational alignment, leverage the following MCP servers when configured in your environment:
+To enable deep cross-repository analysis, architectural modeling, and organizational alignment, leverage the following MCP servers across all phases:
 
 1. **Atlassian MCP Server** (Jira & Confluence):
    ```bash
@@ -37,49 +37,53 @@ To enable deep cross-repository analysis, architectural modeling, and organizati
 
 Analyze the user's prompt and active workspace to establish the target boundary:
 
-* **Scope A (Single API / Endpoint):** Trace request/response flow for the targeted route, controllers, services, DTOs, and persistence layer.
-* **Scope B (Single Flow / Feature):** Trace execution across multiple components for a specific functional unit (e.g., "BOM Recommendation Generation").
-* **Scope C (Single Scenario / Edge Case):** Trace a specific conditional execution path (e.g., "Rule Validation Failure & Fallback Resolution").
-* **Scope D (Entire Project / Cross-Service Architecture):** System-wide sweep across all modules, routes, data flows, and external service contracts via GitHub/Atlassian MCP.
+* **Scope A (Single API / Endpoint):** Trace request/response flow for the targeted route, its controllers, services, DTOs, and persistence layer.
+* **Scope B (Single Flow / Feature):** Trace execution across multiple components for a specific functional unit (e.g., "Checkout Flow" or "BOM Recommendation Generation").
+* **Scope C (Single Scenario / Edge Case):** Trace a specific conditional execution path (e.g., "Payment Failure & Retry Strategy" or "Rule Validation Fallback").
+* **Scope D (Entire Project / Repository & Cross-Service):** System-wide sweep across all modules, routes, data flows, and external service contracts via GitHub/Atlassian MCP.
 
 ---
 
-## Phase 2: Generate Multi-Tier Markdown Documentation
+## Phase 2: Generate Multi-Tier Markdown Documentation Suite
 
-Generate documentation structured into a cohesive multi-level hierarchy:
+Generate documentation structured into a cohesive multi-level file hierarchy:
 
-1. **Parent Document (`EXPLAIN_PARENT.md`):**  
-   * High-level executive overview of the system/feature.  
-   * Navigation index with direct links to all child documents:  
-     - [High-Level Overview](EXPLAIN_HIGH_LEVEL.md)  
-     - [Medium-Level Component Design](EXPLAIN_MID_LEVEL.md)  
-     - [Low-Level Code Walkthrough](EXPLAIN_LOW_LEVEL.md)  
-     - [Nested Box Flow Diagrams](EXPLAIN_FLOW_DIAGRAMS.md)  
-     - [Domain Data Model & OpenSpec Context](EXPLAIN_DATA_MODEL.md)  
-     - [OpenAPI / Swagger Breakdown](EXPLAIN_OPENAPI.md)  
+```
+docs/explain/ (or target directory)
+├── EXPLAIN_PARENT.md          # Master Index & Executive Overview (links to all child documents)
+├── EXPLAIN_HIGH_LEVEL.md       # High-Level Architecture, Design Principles & Dependencies
+├── EXPLAIN_MID_LEVEL.md        # Component Design, State Management & Service Orchestration
+├── EXPLAIN_LOW_LEVEL.md        # Method-by-Method Logic, Algorithmic Rules & Invariants
+├── EXPLAIN_FLOW_DIAGRAMS.md    # Nested Mermaid Container Diagrams & IcePanel C4 Models
+├── EXPLAIN_DATA_MODEL.md       # OpenSpec Domain Data Models & Entity-Relationship Diagrams
+└── EXPLAIN_OPENAPI.md          # OpenAPI 3.1 Spec & Cognitive Attribute Dependency Matrices
+```
 
-2. **High-Level Overview (`EXPLAIN_HIGH_LEVEL.md`):**  
-   * System Architecture, business drivers (citing Jira/Confluence if applicable), and external dependencies (citing external repos via GitHub MCP).  
-   * Macro data lifecycle, bounded contexts, and high-level boundaries.
+### Document Detail Specifications:
 
-3. **Medium-Level Component Design (`EXPLAIN_MID_LEVEL.md`):**  
-   * Component interaction models, event contracts, and service orchestration.  
-   * State management, thread/reactive models (e.g., WebFlux), and transaction boundaries.
+1. **High-Level Overview (`EXPLAIN_HIGH_LEVEL.md`):**  
+   * System Architecture, design principles, and business drivers (citing Jira/Confluence context).
+   * External dependencies and upstream/downstream integrations (citing external repos via GitHub MCP).
+   * Macro data lifecycle and key domain boundaries.
 
-4. **Low-Level Code Walkthrough (`EXPLAIN_LOW_LEVEL.md`):**  
-   * Deep dive into exact methods, algorithmic logic, validation routines, and variable state mutations.  
-   * Exception hierarchies, retry mechanisms, and side effects.
+2. **Medium-Level Component Design (`EXPLAIN_MID_LEVEL.md`):**  
+   * Class/Component interaction models and data flow contracts.  
+   * State management, thread/reactive models (e.g., Spring WebFlux, async event loops), and transactional boundaries.
+
+3. **Low-Level Code Walkthrough (`EXPLAIN_LOW_LEVEL.md`):**  
+   * Deep dive into exact methods, algorithm logic, validation routines, and variable states.  
+   * Exception handling, retry mechanisms, fallbacks, and side-effects.
 
 ---
 
 ## Phase 3: Generate Nested Box Flow Diagrams (Mermaid & IcePanel)
 
-Generate visual execution diagrams using nested container hierarchies.
+Generate visual architecture and execution diagrams matching the **nested container hierarchy style** (`EXPLAIN_FLOW_DIAGRAMS.md`).
 
-### 1. Mermaid Flow Diagram Standard
-* Use `subgraph` blocks with numbered circle headers (e.g., `subgraph S1 ["① Channels / Consumers"]`).
-* Include descriptive node labels with `<br/>` formatting for multi-line context.
-* Render top-to-bottom (`TD`) or left-to-right (`LR`) data flows.
+### Mermaid Styling Standard:
+* Use `subgraph` with numbered circle headers (e.g., `subgraph S1 ["① Channels / Consumers"]`).
+* Use line-breaks (`<br/>`) for descriptive list items inside nodes.
+* Connect containers or inner nodes sequentially from top to bottom (`TD` or `TB` direction).
 
 ```mermaid
 graph TD
@@ -105,10 +109,8 @@ graph TD
     S2 --> S3
 ```
 
-### 2. IcePanel Visual Model Integration
-* When visual architecture modeling is requested or beneficial, use the **IcePanel MCP Server** to:
-  * Export/sync C4 model components into the organizational IcePanel landscape.
-  * Define System Context, Container boundaries, and Component connections.
+### IcePanel Visual Model Integration:
+* When visual architecture modeling is requested or beneficial, use the **IcePanel MCP Server** to define and sync System Context, Container boundaries, and Component linkages into IcePanel.
 
 ---
 
@@ -116,14 +118,14 @@ graph TD
 
 Generate a formal, comprehensive **Domain Data Model** of the functional area. The output must be rigorous enough to be ingested directly by **OpenSpec stores** as authoritative, context-aware functional schemas.
 
-### 1. OpenSpec-Ready Entity Schema Specification
+### 1. OpenSpec-Ready Entity Schema Specification:
 For every core domain entity, define:
 * **Entity Identity & Bounded Context:** Entity name, primary keys, and owning microservice/module.
 * **Fields & Type System:** Full JSON schema / type definitions, defaults, and nullability.
 * **Domain Invariants & Business Rules:** Hard constraints (e.g., `totalPrice >= sum(itemPrice)`).
 * **State Lifecycle & Transitions:** Allowed state progression (e.g., `DRAFT -> VALIDATED -> COMMITTED`).
 
-### 2. Entity-Relationship (ER) Diagram (Mermaid)
+### 2. Entity-Relationship (ER) Diagram (Mermaid):
 
 ```mermaid
 erDiagram
@@ -156,7 +158,7 @@ erDiagram
     }
 ```
 
-### 3. OpenSpec Context Data Model Table
+### 3. OpenSpec Context Data Model Table:
 
 | Entity | Attribute | Type | Multiplicity | Invariant / Validation Rule | OpenSpec Context Impact |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -166,36 +168,44 @@ erDiagram
 
 ---
 
-## Phase 5: OpenAPI / Swagger Breakdown with Cognitive Attribute Dependencies
+## Phase 5: OpenAPI / Swagger Breakdown with Deep Attribute Dependencies (`EXPLAIN_OPENAPI.md`)
 
-For all exposed endpoints, generate the OpenAPI 3.1 specification accompanied by an **Attribute Impact & Dependency Analysis Table**.
+For any analyzed API routes, generate a structured **OpenAPI 3.1 specification** accompanied by an **Attribute Impact & Cognitive Dependency Analysis Table**.
 
-### Attribute Deep-Dive Breakdown
+### Attribute Deep-Dive Requirements:
+For every schema field/attribute, explain:
+1. **Impact & Usage:** Exact runtime role, business logic impact, and downstream side effects.
+2. **Conditional Dependencies:** How this attribute relies on or alters the state of other attributes (e.g., *"If `paymentMethod` is `'CREDIT_CARD'`, `stripeToken` becomes mandatory"*).
+3. **Validation Rules:** Business logic constraints beyond simple data types.
 
-| Attribute | Type | Required | Business Impact & Execution Path | Cognitive Rules & Dependencies |
+### Schema Explanation Table Format:
+
+| Attribute | Type | Required | Business Impact & Usage | Dependencies & Cognitive Rules |
 | :--- | :--- | :--- | :--- | :--- |
-| `targetArchitecture` | `string` | Yes | Directs inference router to specific rule tree | **Requires:** Valid Cisco BU architecture code. |
-| `enableAiResolution` | `boolean` | No (default `true`) | Toggles ML constraint resolution vs strict heuristic | **Overrides:** Fallback timeout when set to `false`. |
+| `tierCode` | `string` | Conditional | Triggers pricing tier evaluation engine. | **Requires:** `accountStatus == 'ACTIVE'`. **Overrides:** `discountRate` if tier is `'PLATINUM'`. |
+| `region` | `string` | Yes | Determines regional database router & tax calculation module. | **Valid Values:** Restricted based on user's `billingCountry`. |
 
 ---
 
-## Phase 6: Summary & Master Navigation (`EXPLAIN_PARENT.md`)
+## Phase 6: Master Parent Navigation (`EXPLAIN_PARENT.md`)
 
-Produce the master index document unifying all generated tiers:
+The parent document (`EXPLAIN_PARENT.md`) must clearly describe the purpose of each child document and provide direct links to them for navigation:
 
 ```markdown
 # Explanation & Architecture Overview
 
 Comprehensive multi-level system specification, architectural diagrams, OpenSpec data models, and API breakdown.
 
-## Available Documentation
+## Documentation Index
 
-- 📘 [High-Level Architecture & Overview](EXPLAIN_HIGH_LEVEL.md) — System boundaries, external dependencies, and business context.
-- ⚙️ [Medium-Level Component Design](EXPLAIN_MID_LEVEL.md) — Component interactions, state machines, and concurrency models.
-- 🔍 [Low-Level Code Walkthrough](EXPLAIN_LOW_LEVEL.md) — Method-by-method logic, algorithms, and exception handling.
-- 📊 [Nested Box Flow Diagrams](EXPLAIN_FLOW_DIAGRAMS.md) — Visual execution flow and C4 system context (Mermaid & IcePanel).
-- 🗄️ [Domain Data Model & OpenSpec Context](EXPLAIN_DATA_MODEL.md) — Complete entity relationships, state machines, and OpenSpec store models.
-- 🔌 [OpenAPI & Attribute Dependency Breakdown](EXPLAIN_OPENAPI.md) — API contract with deep cognitive attribute validation rules.
+| Tier | Document | Focus Area |
+| :--- | :--- | :--- |
+| 📘 **High-Level** | [EXPLAIN_HIGH_LEVEL.md](EXPLAIN_HIGH_LEVEL.md) | Macro Architecture, Bounded Contexts & Dependencies |
+| ⚙️ **Medium-Level** | [EXPLAIN_MID_LEVEL.md](EXPLAIN_MID_LEVEL.md) | Component Orchestration, Concurrency & State Management |
+| 🔍 **Low-Level** | [EXPLAIN_LOW_LEVEL.md](EXPLAIN_LOW_LEVEL.md) | Method Logic, Algorithms, Invariants & Error Handling |
+| 📊 **Diagrams** | [EXPLAIN_FLOW_DIAGRAMS.md](EXPLAIN_FLOW_DIAGRAMS.md) | Nested Mermaid Container Diagrams & IcePanel C4 Models |
+| 🗄️ **Data Model** | [EXPLAIN_DATA_MODEL.md](EXPLAIN_DATA_MODEL.md) | OpenSpec Entity Schemas, Invariants & ER Diagrams |
+| 🔌 **API Spec** | [EXPLAIN_OPENAPI.md](EXPLAIN_OPENAPI.md) | OpenAPI 3.1 Contract & Cognitive Attribute Dependencies |
 ```
 
 ---
