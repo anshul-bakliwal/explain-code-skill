@@ -1,0 +1,22 @@
+{
+  "github.copilot.mcp": {
+    "servers": {
+      "atlassian": {
+        "command": "npx",
+        "args": ["-y", "add-mcp", "https://mcp.atlassian.com/v1/mcp", "--transport", "http"]
+      },
+      "icepanel": {
+        "command": "npx",
+        "args": ["-y", "@icepanel/mcp-server"],
+        "env": {
+          "ICEPANEL_API_KEY": "${env:ICEPANEL_API_KEY}",
+          "ICEPANEL_ORGANIZATION_ID": "${env:ICEPANEL_ORGANIZATION_ID}"
+        }
+      },
+      "github": {
+        "command": "npx",
+        "args": ["-y", "add-mcp", "https://api.githubcopilot.com/mcp/", "--transport", "http"]
+      }
+    }
+  }
+}
